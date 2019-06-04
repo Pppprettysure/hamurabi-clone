@@ -1,0 +1,30 @@
+Hamurabi Clone
+--------------
+
+1 Set Up
+
+- Initialize variables.
+- Give player the context for the game.
+- Personalize.
+
+2 Core Loop
+
+- Output
+    - Year, Population, Acres, Harvest, Bushels Eaten, Bushels, Land Value
+
+- Input
+    - Acre Trading
+    - Bushel Allocation
+
+- Processing
+    - Year Increment
+    - Population Change
+    - Harvest
+    - Bushels Eaten
+    - Land Value
+
+3 Shutdown
+
+- Results
+- High Score Tracking
+- Play Again?
