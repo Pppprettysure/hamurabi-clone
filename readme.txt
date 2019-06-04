@@ -10,4 +10,4 @@ Files:
 
 design_note.txt: lays out the general design of the program, to be updated
 readme.txt: overview of the project
-horrorabi.py: the game, to be added
+horrorabi.py: the game

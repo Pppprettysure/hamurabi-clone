@@ -19,6 +19,7 @@ Hamurabi Clone
 - Processing
     - Year Increment
     - Population Change
+    - Check if Player Lost
     - Harvest
     - Bushels Eaten
     - Land Value
