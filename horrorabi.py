@@ -1,4 +1,6 @@
-# SET UP 
+# SET UP
+
+import random
 
 # Year use as for loop variable
 
@@ -35,11 +37,24 @@ def game_init():
     name = input("What is your name, ruler? ")
 
 game_init()
+random.seed()
 # CORE LOOP
 
 while game_state["year"] < 11:
     # Output
-    print(GAME_SUMMARY.format(**game_state)) 
+    print(GAME_SUMMARY.format(**game_state))
+    
+    # Input
+
+    # Processing
+    game_state["land_value"] = random.randint(17, 26)
+
+    # IS TOO MUCH GRAIN EATEN? BALANCE ONCE GAME IS WORKING
+    game_state["grain_eaten"] = random.randint(0,
+            game_state["grain"] // 200) * 100
+    game_state["grain"] -= game_state["grain_eaten"]
+
+
     game_state["year"] += 1
 
 # SHUT DOWN
