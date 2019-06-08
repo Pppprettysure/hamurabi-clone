@@ -6,6 +6,11 @@ game_state = dict.fromkeys([
         "year", "starved", "immigrants", "population", "acres", 
         "harvest", "grain_eaten", "grain", "land_value"
         ])
+bushel_allocation = { 
+        "land": [0, "How much land do you buy? "],
+        "food": [0, "How much do you feed your people? "],
+        "plant": [0, "How much do you plant? "]
+        }
 GAME_SUMMARY =  ( 
        "In year {year}:\n"
        "{starved} people starved, and {immigrants} came to the city.\n"
@@ -18,8 +23,16 @@ GAME_SUMMARY =  (
         ) 
 name = ""
 
+def validate(num):
+    """ Test if input can be accepted. """
+    if not num.isdigit():
+        raise ValueError("You need to enter a number! ")
+    if int(num) > game_state["grain"]:
+        raise ValueError("You only have {} grain!".format(
+            game_state["grain"]))
+
 def game_init():
-    """Initialize variables to initial states prior to play."""
+    """ Initialize variables to initial states prior to play. """
     game_state["year"] = 1
     game_state["starved"] = 0
     game_state["immigrants"] = 5
@@ -40,8 +53,19 @@ while game_state["year"] < 11:
     # OUTPUT
     print(GAME_SUMMARY.format(**game_state))
     
-    # INPUT
-
+    for expense in bushel_allocation:
+        category = bushel_allocation[category]
+        while True:
+            try: 
+                answer = input(category[1])
+                validate(answer)
+            except ValueError as error:
+                print(error)
+            else:
+                answer = int(answer)
+                game_state["grain"] -= answer
+                category[0] = answer 
+                break
     # PROCESSING
 
     # Generate land value
