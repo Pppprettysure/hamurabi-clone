@@ -23,11 +23,11 @@ GAME_SUMMARY =  (
         ) 
 name = ""
 
-def validate(num):
+def validate(num, multiplier = 1):
     """ Test if input can be accepted. """
     if not num.isdigit():
         raise ValueError("You need to enter a number! ")
-    if int(num) > game_state["grain"]:
+    if int(num) * multiplier  > game_state["grain"]:
         raise ValueError("You only have {} grain!".format(
             game_state["grain"]))
 
@@ -53,19 +53,26 @@ while game_state["year"] < 11:
     # OUTPUT
     print(GAME_SUMMARY.format(**game_state))
     
+    # INPUT
     for expense in bushel_allocation:
-        category = bushel_allocation[category]
+        category = bushel_allocation[expense]
         while True:
             try: 
                 answer = input(category[1])
+                if expense  == "land":
+                    validate(answer, game_state["land_value"])
                 validate(answer)
             except ValueError as error:
                 print(error)
             else:
                 answer = int(answer)
-                game_state["grain"] -= answer
+                if expense == "land":
+                    game_state["grain"] -= answer * game_state["land_value"]
+                else:
+                    game_state["grain"] -= answer
                 category[0] = answer 
                 break
+
     # PROCESSING
 
     # Generate land value
