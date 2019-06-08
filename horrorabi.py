@@ -61,7 +61,8 @@ while game_state["year"] < 11:
                 answer = input(category[1])
                 if expense  == "land":
                     validate(answer, game_state["land_value"])
-                validate(answer)
+                else:
+                    validate(answer)
             except ValueError as error:
                 print(error)
             else:
