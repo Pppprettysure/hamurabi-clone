@@ -65,9 +65,11 @@ while game_state["year"] < 11:
                 if expense  == "land":
                     answer = validate(answer, game_state["land_value"])
                     game_state["grain"] -= answer * game_state["land_value"]
+                    game_state["acres"] += answer
                 elif expense == "sell":
                     answer = validate(answer, 1, "acres") 
                     game_state["grain"] += answer * game_state["land_value"]
+                    game_state["acres"] -= answer
                 else:
                     answer = validate(answer)
                     game_state["grain"] -= answer
@@ -78,15 +80,21 @@ while game_state["year"] < 11:
                 break
 
     # PROCESSING
-
+    
+    # Dependent on player action 
+    #Starvation
+    # Independent of player action
+    
     # Generate land value
     game_state["land_value"] = random.randint(17, 26)
 
-    # Determine how much grain was eaten
+    # Determine how much grain was eaten by rats
     game_state["grain_eaten"] = random.randint(0,
             game_state["grain"] // 200) * 100
     game_state["grain"] -= game_state["grain_eaten"] 
-
+     
+    # Immigrant random + add
+    # Advance year
     game_state["year"] += 1
 
 # SHUT DOWN
