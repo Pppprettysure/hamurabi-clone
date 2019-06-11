@@ -123,10 +123,15 @@ while game_state["year"] < 11:
     else:
         game_state["population"] -= game_state["starved"]
    
-    # Independent of player action
-    
     # Generate land value
     game_state["land_value"] = random.randint(17, 26)
+
+    # Generate productivity of land
+    game_state["harvest"] = random.randint(1, 6)
+
+    print(bushel_allocation["food"][0])
+    # Add harvest
+    game_state["grain"] += game_state["harvest"] * bushel_allocation["plant"][0]
 
     # Determine how much grain was eaten by rats
     game_state["grain_eaten"] = random.randint(0,
@@ -139,9 +144,9 @@ while game_state["year"] < 11:
             + game_state["grain"]
             )
 
-    game_state["immigrants"] = (
+    game_state["immigrants"] = ((
             random.randint(0 , 10) * 20 * (immigrant_modifiers) 
-            // game_state["population"] // 101 
+            // game_state["population"]) // 101 
             )
 
     game_state["population"] += game_state["immigrants"]
