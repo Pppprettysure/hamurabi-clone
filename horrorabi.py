@@ -8,6 +8,7 @@ game_state = dict.fromkeys([
         ])
 bushel_allocation = { 
         "land": [0, "How much land do you buy? "],
+        "sell": [0, "How much land do you sell? "],
         "food": [0, "How much do you feed your people? "],
         "plant": [0, "How much do you plant? "]
         }
@@ -24,12 +25,14 @@ GAME_SUMMARY =  (
 name = ""
 
 def validate(num, multiplier = 1, variable = "grain"):
-    """ Test if input can be accepted. """
+    """ Test if input can be accepted and return as int. """
     if not num.isdigit():
         raise ValueError("You need to enter a number! ")
     if int(num) * multiplier > game_state[variable]:
         raise ValueError("You only have {} {}!".format(
             game_state[variable], variable))
+    else:
+        return int(num)
 
 def game_init():
     """ Initialize variables to initial states prior to play. """
@@ -60,30 +63,17 @@ while game_state["year"] < 11:
             try: 
                 answer = input(category[1])
                 if expense  == "land":
-                    validate(answer, game_state["land_value"])
+                    answer = validate(answer, game_state["land_value"])
+                    game_state["grain"] -= answer * game_state["land_value"]
+                elif expense == "sell":
+                    answer = validate(answer, 1, "acres") 
+                    game_state["grain"] += answer * game_state["land_value"]
                 else:
-                    validate(answer)
+                    answer = validate(answer)
+                    game_state["grain"] -= answer
             except ValueError as error:
                 print(error)
             else:
-                answer = int(answer)
-                if expense == "land":
-                    # Make this a function?
-                    if answer == 0:
-                        while(True):
-                            try:
-                                # Checking if answer is within bounds if selling
-                                answer = input("How much land do you sell? ")
-                                validate(answer, 1, "acres")
-                            except ValueError as error:
-                                print(error)
-                            else:
-                                game_state["grain"] += int(answer) * game_state["land_value"]            
-                                break
-                    else:
-                         game_state["grain"] -= answer *  game_state["land_value"]
-                else:
-                    game_state["grain"] -= answer
                 category[0] = answer 
                 break
 
@@ -95,8 +85,7 @@ while game_state["year"] < 11:
     # Determine how much grain was eaten
     game_state["grain_eaten"] = random.randint(0,
             game_state["grain"] // 200) * 100
-    game_state["grain"] -= game_state["grain_eaten"]
-
+    game_state["grain"] -= game_state["grain_eaten"] 
 
     game_state["year"] += 1
 
