@@ -100,7 +100,18 @@ while game_state["year"] < 11:
     game_state["grain"] -= game_state["grain_eaten"] 
      
     # Immigrant random + add
-    
+    immigrant_modifiers = (
+            (game_state["harvest"] * game_state["starved"])
+            + game_state["grain"]
+            )
+
+    game_state["immigrants"] = (
+            random.randint(0 , 10) * 20 * (immigrant_modifiers) 
+            // game_state["population"] // 101 
+            )
+
+    game_state["population"] += game_state["immigrants"]
+
     # Advance year
     game_state["year"] += 1
 
