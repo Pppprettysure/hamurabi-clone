@@ -154,3 +154,4 @@ while game_state["year"] < 11:
         loss()
 
 # SHUT DOWN
+print("Thanks for playing! ")
