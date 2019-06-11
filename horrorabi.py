@@ -34,6 +34,30 @@ def validate(num, multiplier = 1, variable = "grain"):
     else:
         return int(num)
 
+def check_loss():
+    if game_state["population"] < 1:
+        print("You've lost all citizens! ")
+        return True
+    elif game_state["population"] * .45 < game_state["starved"]:
+        print("You've been overthrown by the starving peasantry! ")
+        return True
+    else:
+        return False
+
+def loss():
+    # TODO: These loops could be made into a function maybe? or maybe
+    # just reutilize the main function
+    while True:
+        answer = input("Do you want to play again? Y/N: ")
+        if answer.casefold() == "y":
+            game_init()
+            break
+        elif answer.casefold() == "n":
+            game_state["year"] = 100
+            break
+        else:
+            print("Please enter a valid answer.")
+                
 def game_init():
     """ Initialize variables to initial states prior to play. """
     game_state["year"] = 1
@@ -53,6 +77,8 @@ game_init()
 # CORE LOOP
 
 while game_state["year"] < 11:
+    lost = False
+
     # OUTPUT
     print(GAME_SUMMARY.format(**game_state))
     
@@ -87,8 +113,16 @@ while game_state["year"] < 11:
     
     # Dependent on player action 
 
-    # Starvation
-    
+    # Starvation (each person needs 20 grain)
+    game_state["starved"] = (
+        (game_state["population"] * 20) - bushel_allocation["food"][0] 
+        ) // 20 
+
+    if check_loss():
+        lost = True
+    else:
+        game_state["population"] -= game_state["starved"]
+   
     # Independent of player action
     
     # Generate land value
@@ -114,5 +148,9 @@ while game_state["year"] < 11:
 
     # Advance year
     game_state["year"] += 1
+
+    # Check if player wants to restart of if program should terminate on loss
+    if lost == True:
+        loss()
 
 # SHUT DOWN
