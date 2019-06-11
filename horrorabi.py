@@ -12,7 +12,8 @@ bushel_allocation = {
         "food": [0, "How much do you feed your people? "],
         "plant": [0, "How much do you plant? "]
         }
-GAME_SUMMARY =  ( 
+GAME_SUMMARY =  (
+       "\n"
        "In year {year}:\n"
        "{starved} people starved, and {immigrants} came to the city.\n"
        "The population is now {population}.\n"
@@ -129,7 +130,6 @@ while game_state["year"] < 11:
     # Generate productivity of land
     game_state["harvest"] = random.randint(1, 6)
 
-    print(bushel_allocation["food"][0])
     # Add harvest
     game_state["grain"] += game_state["harvest"] * bushel_allocation["plant"][0]
 
@@ -140,13 +140,13 @@ while game_state["year"] < 11:
      
     # Immigrant random + add
     immigrant_modifiers = (
-            (game_state["harvest"] * game_state["starved"])
+            (game_state["acres"]) 
             + game_state["grain"]
             )
 
-    game_state["immigrants"] = ((
-            random.randint(0 , 10) * 20 * (immigrant_modifiers) 
-            // game_state["population"]) // 101 
+    game_state["immigrants"] = (((
+            random.randint(0 , 5) * 20 * game_state["acres"] + 
+            game_state["grain"]) // game_state["population"]) // 101 
             )
 
     game_state["population"] += game_state["immigrants"]
