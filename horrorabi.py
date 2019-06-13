@@ -3,7 +3,7 @@
 import random
 
 game_state = dict.fromkeys([
-        "year", "starved", "immigrants", "population", "acres", 
+        "year", "plague_state", "starved", "immigrants", "population", "acres", 
         "harvest", "grain_eaten", "grain", "land_value"
         ])
 bushel_allocation = { 
@@ -15,6 +15,7 @@ bushel_allocation = {
 GAME_SUMMARY =  (
        "\n"
        "In year {year}:\n"
+       "{plague_state}"
        "{starved} people starved, and {immigrants} came to the city.\n"
        "The population is now {population}.\n"
        "The city owns {acres} acres.\n"
@@ -24,6 +25,7 @@ GAME_SUMMARY =  (
        "Land is trading at {land_value} bushels per acre.\n" 
         ) 
 name = ""
+plague_years = []
 
 def validate(num, multiplier = 1, variable = "grain"):
     """ Test if input can be accepted and return as int. """
@@ -61,9 +63,13 @@ def loss():
                 
 def game_init():
     """ Initialize variables to initial states prior to play. """
+    global plague_years
+    global lost
+
     lost = False
 
     game_state["year"] = 1
+    game_state["plague_state"] = ""
     game_state["starved"] = 0
     game_state["immigrants"] = 5
     game_state["population"] = 100
@@ -72,7 +78,15 @@ def game_init():
     game_state["grain_eaten"] = 200
     game_state["grain"] = 2800
     game_state["land_value"] = 26
-    
+   
+    # Generate plague years
+    plagues = [random.randint(2,11), random.randint(2,11)]
+    plague_years.extend(plagues)
+
+    # Check and fix if there is overlapping plagues
+    while plague_years[0] == plague_years[1]:
+        plague_years[0] = random.randint(2,11) 
+
     # Intro message
     print("\n"
           "You've come to rule an ancient Sumerian city state in the year 3000 "
@@ -91,7 +105,6 @@ game_init()
 # CORE LOOP
 
 while game_state["year"] < 11:
-
     # OUTPUT
     print(GAME_SUMMARY.format(**game_state))
     
@@ -124,8 +137,6 @@ while game_state["year"] < 11:
 
     # PROCESSING
     
-    # Dependent on player action 
-
     # Starvation (each person needs 20 grain)
     game_state["starved"] = (
         (game_state["population"] * 20) - bushel_allocation["food"][0] 
@@ -167,6 +178,17 @@ while game_state["year"] < 11:
 
     # Advance year
     game_state["year"] += 1
+
+    # Check if there's a plague and enforce it
+    if (game_state["year"] == plague_years[0]
+        or game_state["year"] == plague_years[1]):
+            game_state["population"] = game_state["population"] //  2
+            game_state["plague_state"] = (
+                    "There's been a plague! Half of your citizens have died.\n"
+                    )
+    else:
+        game_state["plague_state"] = ""
+
 
     # Check if player wants to restart of if program should terminate on loss
     if lost == True:
