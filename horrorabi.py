@@ -70,8 +70,19 @@ def game_init():
     game_state["grain_eaten"] = 200
     game_state["grain"] = 2800
     game_state["land_value"] = 26
+    
+    # Intro message
+    print("\n"
+          "You've come to rule an ancient Sumerian city state in the year 3000 "
+          "\nBC until the sole remaining heir reaches of age. You must allocate "
+          "\nstate resources so that you may protect the future reign of your "
+          "\nking and protect the lives of your people through the disastrous "
+          "\nplagues and rat infestations that plague your land. Your 10 year"
+          "\nduty begins now.") 
+
     name = input("\nWhat is your name, ruler? ")
 
+# Initialization
 random.seed()
 game_init()
 
