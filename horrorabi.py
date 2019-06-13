@@ -1,7 +1,8 @@
-# SET UP
+# Import
 
 import random
 
+# Variable assignment
 game_state = dict.fromkeys([
         "year", "plague_state", "starved", "immigrants", "population", "acres", 
         "harvest", "grain_eaten", "grain", "land_value"
@@ -24,9 +25,11 @@ GAME_SUMMARY =  (
        "You now have {grain} bushels in storage.\n"
        "Land is trading at {land_value} bushels per acre.\n" 
         ) 
+BUSHELS_NEEDED = 20
 name = ""
 plague_years = []
 
+# Functions
 def validate(num, multiplier = 1, variable = "grain"):
     """ Test if input can be accepted and return as int. """
     if not num.isdigit():
@@ -47,7 +50,8 @@ def check_loss():
     else:
         return False
 
-def loss():
+def game_end():
+    """ Check if player wants to play again upon game end. """
     # TODO: These loops could be made into a function maybe? or maybe
     # just reutilize the main function
     while True:
@@ -98,6 +102,7 @@ def game_init():
 
     name = input("\nWhat is your name, ruler? ")
 
+
 # Initialization
 random.seed()
 game_init()
@@ -137,10 +142,9 @@ while game_state["year"] < 11:
 
     # PROCESSING
     
-    # Starvation (each person needs 20 grain)
-    game_state["starved"] = (
-        (game_state["population"] * 20) - bushel_allocation["food"][0] 
-        ) // 20 
+    # Starvation 
+    game_state["starved"] = ( (game_state["population"] * BUSHELS_NEEDED) -
+        bushel_allocation["food"][0]  ) // BUSHELS_NEEDED 
     if game_state["starved"] < 1:
         game_state["starved"] = 0
 
@@ -176,9 +180,6 @@ while game_state["year"] < 11:
 
     game_state["population"] += game_state["immigrants"]
 
-    # Advance year
-    game_state["year"] += 1
-
     # Check if there's a plague and enforce it
     if (game_state["year"] == plague_years[0]
         or game_state["year"] == plague_years[1]):
@@ -189,10 +190,13 @@ while game_state["year"] < 11:
     else:
         game_state["plague_state"] = ""
 
-
-    # Check if player wants to restart of if program should terminate on loss
-    if lost == True:
-        loss()
+    # Check if player wants to restart or if program should terminate when end 
+    if lost == True or game_state["year"] == 10:
+        game_end()
+        
+    # Advance year
+    game_state["year"] += 1
+    
 
 # SHUT DOWN
 print("\nThanks for playing! ")
