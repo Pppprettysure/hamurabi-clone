@@ -118,6 +118,8 @@ while game_state["year"] < 11:
     game_state["starved"] = (
         (game_state["population"] * 20) - bushel_allocation["food"][0] 
         ) // 20 
+    if game_state["starved"] < 1:
+        game_state["starved"] = 0
 
     if check_loss():
         lost = True
