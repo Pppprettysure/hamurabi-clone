@@ -40,7 +40,7 @@ def check_loss():
         print("You've lost all citizens! ")
         return True
     elif game_state["population"] * .45 < game_state["starved"]:
-        print("You've been overthrown by the starving peasantry! ")
+        print("\nYou've been overthrown by the starving peasantry! ")
         return True
     else:
         return False
@@ -159,4 +159,4 @@ while game_state["year"] < 11:
         loss()
 
 # SHUT DOWN
-print("Thanks for playing! ")
+print("\nThanks for playing! ")
