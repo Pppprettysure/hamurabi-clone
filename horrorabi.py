@@ -3,20 +3,14 @@
 import random
 
 # Variable assignment
-init_game_state = {
+
+INIT_GAME_STATE = {
         "year": 1, "plague_state": "", "starved": 0, 
         "immigrants": 5, "population": 100, "acres": 1000, 
         "harvest": 3, "grain_eaten": 200, "grain":2800,
         "land_value": 26
-    }
-game_state = {}
-bushel_allocation = { 
-        "land": [0, "How much land do you buy? "],
-        "sell": [0, "How much land do you sell? "],
-        "food": [0, "How much do you feed your people? "],
-        "plant": [0, "How much do you plant? "]
         }
-GAME_SUMMARY =  (
+YEAR_SUMMARY =  (
        "\n"
        "In year {year}:\n"
        "{plague_state}"
@@ -28,10 +22,17 @@ GAME_SUMMARY =  (
        "You now have {grain} bushels in storage.\n"
        "Land is trading at {land_value} bushels per acre.\n" 
         ) 
+GAME_SUMMARY = [
+        ("\nUpon the assignment of your duty {year} years ago, your city had "
+        "{population} people, {acres} acres\nof land and {grain} bushels in your"
+        " granary."), 
+        ("\nAt the date of your leave, the city was left with {population} "
+            "people, {acres} acres of land\nand {grain} bushels.")
+        ]
 LOSS_MESSAGE = ("\n"
         "You've failed your duty to protect your young king's throne. "
-        "The head priest has \nswept into power in his stead with the promise "
-        "that no one will go hungry under his leadership through the worship of"
+        "The head priest has\nswept into power in his stead with the promise "
+        "that no one will go hungry\nunder his leadership through the worship of"
         " the nation's patron god.")
 WIN_MESSAGE = ("\n"
         "Upon completion of your decade long rule, you attend the coronation "
@@ -39,8 +40,17 @@ WIN_MESSAGE = ("\n"
         "your stewardship the city remained stable under your watch even in " 
         "these difficult times.")
 BUSHELS_NEEDED = 20
+
+game_state = {}
+bushel_allocation = { 
+        "land": [0, "How much land do you buy? "],
+        "sell": [0, "How much land do you sell? "],
+        "food": [0, "How much do you feed your people? "],
+        "plant": [0, "How much do you plant? "]
+        }
 name = ""
 plague_years = []
+starved = 0
 
 # Functions
 def validate(num, multiplier = 1, variable = "grain"):
@@ -66,6 +76,7 @@ def check_loss():
 def game_end():
     """ Check if player wants to play again upon game end and give results. """
     global lost
+    global GAME_INIT_STATE
     
     # Give results 
     if lost == True:
@@ -73,12 +84,13 @@ def game_end():
     else:
         print(WIN_MESSAGE)
 
-   # TODO: SUMMARIZE HOW PLAYER DID 
+    print(GAME_SUMMARY[0].format(**INIT_GAME_STATE))
+    print(GAME_SUMMARY[1].format(**game_state))
 
 
     # Check if player wants to play again
     while True:
-        answer = input("Do you want to play again? Y/N: ")
+        answer = input("\nDo you want to play again? Y/N: ")
         if answer.casefold() == "y":
             game_init()
             break
@@ -95,7 +107,7 @@ def game_init():
     global game_state
 
     lost = False
-    game_state = dict(init_game_state) 
+    game_state = dict(INIT_GAME_STATE) 
 
     # Generate plague years
     plagues = [random.randint(2,11), random.randint(2,11)]
@@ -125,7 +137,7 @@ game_init()
 
 while game_state["year"] < 11:
     # OUTPUT
-    print(GAME_SUMMARY.format(**game_state))
+    print(YEAR_SUMMARY.format(**game_state))
     
     # INPUT
     for expense in bushel_allocation:
