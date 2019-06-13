@@ -61,6 +61,8 @@ def loss():
                 
 def game_init():
     """ Initialize variables to initial states prior to play. """
+    lost = False
+
     game_state["year"] = 1
     game_state["starved"] = 0
     game_state["immigrants"] = 5
@@ -89,7 +91,6 @@ game_init()
 # CORE LOOP
 
 while game_state["year"] < 11:
-    lost = False
 
     # OUTPUT
     print(GAME_SUMMARY.format(**game_state))
