@@ -3,10 +3,13 @@
 import random
 
 # Variable assignment
-game_state = dict.fromkeys([
-        "year", "plague_state", "starved", "immigrants", "population", "acres", 
-        "harvest", "grain_eaten", "grain", "land_value"
-        ])
+init_game_state = {
+        "year": 1, "plague_state": "", "starved": 0, 
+        "immigrants": 5, "population": 100, "acres": 1000, 
+        "harvest": 3, "grain_eaten": 200, "grain":2800,
+        "land_value": 26
+    }
+game_state = {}
 bushel_allocation = { 
         "land": [0, "How much land do you buy? "],
         "sell": [0, "How much land do you sell? "],
@@ -25,6 +28,16 @@ GAME_SUMMARY =  (
        "You now have {grain} bushels in storage.\n"
        "Land is trading at {land_value} bushels per acre.\n" 
         ) 
+LOSS_MESSAGE = ("\n"
+        "You've failed your duty to protect your young king's throne. "
+        "The head priest has \nswept into power in his stead with the promise "
+        "that no one will go hungry under his leadership through the worship of"
+        " the nation's patron god.")
+WIN_MESSAGE = ("\n"
+        "Upon completion of your decade long rule, you attend the coronation "
+        "of the rightful king, as ordained by the gods. Because of "
+        "your stewardship the city remained stable under your watch even in " 
+        "these difficult times.")
 BUSHELS_NEEDED = 20
 name = ""
 plague_years = []
@@ -51,9 +64,19 @@ def check_loss():
         return False
 
 def game_end():
-    """ Check if player wants to play again upon game end. """
-    # TODO: These loops could be made into a function maybe? or maybe
-    # just reutilize the main function
+    """ Check if player wants to play again upon game end and give results. """
+    global lost
+    
+    # Give results 
+    if lost == True:
+        print(LOSS_MESSAGE)
+    else:
+        print(WIN_MESSAGE)
+
+   # TODO: SUMMARIZE HOW PLAYER DID 
+
+
+    # Check if player wants to play again
     while True:
         answer = input("Do you want to play again? Y/N: ")
         if answer.casefold() == "y":
@@ -66,23 +89,14 @@ def game_end():
             print("Please enter a valid answer.")
                 
 def game_init():
-    """ Initialize variables to initial states prior to play. """
+    """ Initialize variables prior to play. """
     global plague_years
     global lost
+    global game_state
 
     lost = False
+    game_state = dict(init_game_state) 
 
-    game_state["year"] = 1
-    game_state["plague_state"] = ""
-    game_state["starved"] = 0
-    game_state["immigrants"] = 5
-    game_state["population"] = 100
-    game_state["acres"] = 1000
-    game_state["harvest"] = 3
-    game_state["grain_eaten"] = 200
-    game_state["grain"] = 2800
-    game_state["land_value"] = 26
-   
     # Generate plague years
     plagues = [random.randint(2,11), random.randint(2,11)]
     plague_years.extend(plagues)
