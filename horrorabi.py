@@ -70,7 +70,7 @@ def game_init():
     game_state["grain_eaten"] = 200
     game_state["grain"] = 2800
     game_state["land_value"] = 26
-    name = input("What is your name, ruler? ")
+    name = input("\nWhat is your name, ruler? ")
 
 random.seed()
 game_init()
